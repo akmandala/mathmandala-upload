@@ -17,6 +17,11 @@ app.add_middleware(
 UPLOAD_DIR = "/tmp/uploads"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
+@app.get("/uploads")
+def list_uploads():
+    files = os.listdir(UPLOAD_DIR)
+    return {"files": files}
+
 @app.post("/upload")
 async def upload(file: UploadFile = File(...), name: str = Form(...), subject: str = Form(...)):
     timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
