@@ -14,7 +14,7 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
-UPLOAD_DIR = "uploads"
+UPLOAD_DIR = "/tmp/uploads"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 @app.post("/upload")
@@ -27,3 +27,4 @@ async def upload(file: UploadFile = File(...), name: str = Form(...), subject: s
         shutil.copyfileobj(file.file, buffer)
 
     return JSONResponse({"status": "ok", "filename": filename})
+    
