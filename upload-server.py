@@ -1,6 +1,7 @@
 from fastapi import FastAPI, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from fastapi import HTTPException
 import os
 from datetime import datetime
 import shutil
@@ -32,4 +33,13 @@ async def upload(file: UploadFile = File(...), name: str = Form(...), subject: s
         shutil.copyfileobj(file.file, buffer)
 
     return JSONResponse({"status": "ok", "filename": filename})
-    
+
+@app.delete("/delete/{filename}")
+def delete_file(filename: str):
+    filepath = os.path.join("/tmp/uploads", filename)
+    if os.path.exists(filepath):
+        os.remove(filepath)
+        return {"status": "deleted", "filename": filename}
+    else:
+        raise HTTPException(status_code=404, detail="File not found")
+
