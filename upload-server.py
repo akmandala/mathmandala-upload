@@ -43,3 +43,17 @@ def delete_file(filename: str):
     else:
         raise HTTPException(status_code=404, detail="File not found")
 
+@app.delete("/delete-all")
+def delete_all_uploaded_files():
+    folder = "/tmp/uploads"
+    if not os.path.exists(folder):
+        return JSONResponse({"status": "error", "message": "Upload directory not found"}, status_code=404)
+
+    deleted = []
+    for f in os.listdir(folder):
+        path = os.path.join(folder, f)
+        if os.path.isfile(path):
+            os.remove(path)
+            deleted.append(f)
+
+    return {"status": "ok", "deleted_files": deleted}
