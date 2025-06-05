@@ -25,9 +25,9 @@ def list_uploads():
     return {"files": files}
 
 @app.post("/upload")
-async def upload(file: UploadFile = File(...), name: str = Form(...), subject: str = Form(...)):
+async def upload(file: UploadFile = File(...), name: str = Form(...)):
     timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    filename = f"mathmandala_{name}_{subject}_{timestamp}.jpg"
+    filename = f"mathmandala_{name}_{timestamp}.jpg"
     file_path = os.path.join(UPLOAD_DIR, filename)
 
     with open(file_path, "wb") as buffer:
