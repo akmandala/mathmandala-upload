@@ -36,7 +36,7 @@ async def upload(file: UploadFile = File(...), name: str = Form(...)):
     return JSONResponse({"status": "ok", "filename": filename})
 
 @app.post("/uploadb")
-async def upload(file: UploadFile = File(...)):
+async def uploadb(file: UploadFile = File(...)):
     timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     filename = f"brilliants_{timestamp}.jpg"
     file_path = os.path.join(UPLOAD_DIR, filename)
