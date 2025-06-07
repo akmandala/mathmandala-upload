@@ -34,6 +34,17 @@ async def upload(file: UploadFile = File(...), name: str = Form(...)):
         shutil.copyfileobj(file.file, buffer)
 
     return JSONResponse({"status": "ok", "filename": filename})
+
+@app.post("/uploadb")
+async def upload(file: UploadFile = File(...)):
+    timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    filename = f"brilliants_{timestamp}.jpg"
+    file_path = os.path.join(UPLOAD_DIR, filename)
+
+    with open(file_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+
+    return JSONResponse({"status": "ok", "filename": filename})
     
 @app.get("/files/{filename}")
 def get_uploaded_file(filename: str):
